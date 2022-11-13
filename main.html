@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Переводчик с "естественного" на SQL</title>
+<link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css"/>
+<link rel="stylesheet" href="style.css">
+<script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+
+</head>
+<body>
+    <br><br>
+    <h>Переводчик с "естественного" на SQL</h>
+    <div><br><br><br><br><br><br><br>
+        Введите имя таблицы
+        <br><br>
+        <input type="text" id="name">
+        <br><br>
+        Введите запрос:
+        <br>
+        <input type="text" id="text">
+        <br><br><br>
+
+        <button id="translate" type="submit" pys-onClick="trans_late">Перевести</button>
+        <br><br><br>
+        <p> Перевод на SQL запрос:<br> <span id="SQL"></span></p>
+    </div>
+<py-script>
+    def trans_late(*args):
+        translate = "Ничего"
+        name = str(Element("name").value)
+        text = str(Element("text").value)
+        text = text.lower()
+        f = True
+        if "все" in text:
+            translate = "select * from "+name
+            f = False
+        if ("количество" in text or "сколько" in text) and f:
+            translate = "select count(*) from "+name
+        if "уникал" in text and ("количество" in text or "сколько" in text):
+            translate = "select count(distinct title) from "+name
+        Element("SQL").element.innerText = ''.join(translate)
+</py-script>
+</body>
+</html>
